@@ -1,6 +1,6 @@
 import moment from "moment";
 import styled from "styled-components";
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import { choiseEvent } from "../redux/actions";
 
 const TableWrapper = styled.div`
@@ -60,7 +60,6 @@ function Table({ days, events, choisenEvent, choiseEvent }) {
   }
 
   function renderCells(events, days) {
-    console.log(events);
     let content = [];
 
       for(let day of days) {
