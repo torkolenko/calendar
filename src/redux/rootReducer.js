@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import { weekDaysReducer } from "./weekDaysReducer"
+import { weekReducer } from "./weekReducer"
 import { eventsReducer } from "./eventsReducer"
 
 export const rootReducer = combineReducers({
-  weekDays: weekDaysReducer,
+  days: weekReducer,
   events: eventsReducer
 })

@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { getWeek } from "../redux/actions";
+import { getWeek, deleteEvent } from "../redux/actions";
 import moment from "moment";
 import { connect } from "react-redux";
 
@@ -16,37 +16,49 @@ const FooterWrapper = styled.div`
   align-items: center;
 `;
 
-const TodayButton = styled.button`
+const StyledTodayButton = styled.button`
   border: none;
   width: 80px;
   height: 40px;
   background-color: #f6f6f6;
-  color:#ff2d2d;
+  color: #ff2d2d;
   font-size: 20px;
   margin-left: 20px;
 
   &:hover {
     font-size: 25px;
+  };
 `;
 
-const DeleteButton = styled(TodayButton)`
+const StyledDeleteButton = styled(StyledTodayButton)`
   margin-right: 20px;
-  // display: none;
+  display: ${
+    props => props.isActive ? "block" :
+    "none"
+  };
 `;
 
-function Footer({getWeek}) {
+function Footer({getWeek, choisenEvent, deleteEvent}) {
   return (
     <FooterWrapper>
-      <TodayButton onClick = { ()=> {
-        getWeek(moment());
-      }}>Today</TodayButton>
-      <DeleteButton>Delete</DeleteButton>
+      <StyledTodayButton 
+        onClick = { () => getWeek(moment().startOf("isoWeek")) }
+      >Today</StyledTodayButton>
+      <StyledDeleteButton 
+        isActive = { choisenEvent }
+        onMouseDown = { () => deleteEvent(choisenEvent) }
+      >Delete</StyledDeleteButton>
     </FooterWrapper>
   )
 }
 
+const mapStateToProps = state => ({
+    choisenEvent: state.events.choisenEvent
+})
+
 const mapDispatchToProps = {
-  getWeek
+  getWeek,
+  deleteEvent
 }
 
-export default connect(null, mapDispatchToProps)(Footer);
+export default connect(mapStateToProps, mapDispatchToProps)(Footer);

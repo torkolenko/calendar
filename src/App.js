@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Header from "./components/Header"
 import DayList from "./components/DayList";
-import WeekButtonsAndMonth from "./components/WeekButtonsAndMonth";
+import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import Table from "./components/Table";
 import { createStore } from "redux";
@@ -13,7 +13,7 @@ const AppWrapper = styled.div`
   margin: 0 auto;
 `;
 
-const WeekChangeWrapper = styled.div`
+const DayListAndNavWrapper = styled.div`
   background-color: #f6f6f6;
   height: 105px;
 `;
@@ -22,12 +22,11 @@ const StyledHeaderHr = styled.hr`
   margin: 0; 
   padding: 0;
   border: none; 
-  size: 10px;
   border-top: 2px solid #ececec;
 `;
 
-const StyleFooterHr = styled(StyledHeaderHr)`
-  border-top:none;
+const StyledFooterHr = styled(StyledHeaderHr)`
+  border-top: none;
   border-bottom: 2px solid #ececec;
 `
 
@@ -36,7 +35,8 @@ const PositionStickyHeader = styled.div`
   top: 0;
 `;
 
-const PositionStickyFooter = styled(PositionStickyHeader)`
+const PositionStickyFooter = styled.div`
+  position: sticky;
   bottom: 0;
 `;
 
@@ -49,15 +49,15 @@ function App() {
         <PositionStickyHeader>
           <Header />
           <StyledHeaderHr />
-          <WeekChangeWrapper>
+          <DayListAndNavWrapper>
             <DayList />
-            <WeekButtonsAndMonth />
-          </WeekChangeWrapper>
+            <Nav />
+          </DayListAndNavWrapper>
           <StyledHeaderHr />
         </PositionStickyHeader>
         <Table />
         <PositionStickyFooter>
-          <StyleFooterHr/>
+          <StyledFooterHr/>
           <Footer />
         </PositionStickyFooter>
       </AppWrapper>

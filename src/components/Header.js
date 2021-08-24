@@ -9,10 +9,10 @@ const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 0 30px 0 30px
+  padding: 0 30px 0 30px;
 `;
 
-const Title = styled.h1`
+const StyledTitle = styled.h1`
   font-weight: 300;
   font-size: 1.1rem;
   position: relative;
@@ -21,7 +21,7 @@ const Title = styled.h1`
 
 const AddButton = styled.button`
   background-image: url(${add}) ;
-  background-repeat : no-repeat;
+  background-repeat: no-repeat;
   background-size: 60%;
   background-color: white;
   background-position: center;
@@ -32,17 +32,18 @@ const AddButton = styled.button`
 
   &:hover {
     background-size: 90%;
+  };
 `;
 
-function Header({createEvent}) {
+function Header({ createEvent }) {
   return (
     <HeaderWrapper>
-      <Title>Interview Calendar</Title>
+      <StyledTitle>Interview Calendar</StyledTitle>
           <AddButton onClick = {  () => {
             const event = prompt("Enter event time:\nYYYY-MM-DD HH:mm:ss", "");
             if(event) {
               createEvent(event);
-            }
+            };
           }}></AddButton>
     </HeaderWrapper>
   )

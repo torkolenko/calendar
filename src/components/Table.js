@@ -1,6 +1,7 @@
 import moment from "moment";
 import styled from "styled-components";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { choiseEvent } from "../redux/actions";
 
 const TableWrapper = styled.div`
   display: flex;
@@ -37,80 +38,91 @@ const StyledCell = styled.div`
 `;
 
 const StyledCellWithEvent = styled.div`
-  background-color: #ecedff;
   outline: 2px solid white;
   padding: 2px;
   outline-offset: -2px;
+  background-color: ${
+    props => props.isActive ? "#b4b8ff" :
+    "#ecedff"
+  };
 `;
 
-function Table({days, events}) {
-
-  function renderTime() {
+function Table({ days, events, choisenEvent, choiseEvent }) {
+  function renderTimeColumn() {
     let content = [];
     
     for(let i = 0; i < 24; i++) {
-      let time = moment(i, "H").format("HH:mm");
+      const time = moment(i, "H").format("HH:mm");
       content.push( <StyledTime key = {i}>{time}</StyledTime> )
     }
+
     return content;
   }
 
-  function renderCells(days, events) {
-
+  function renderCells(events, days) {
+    console.log(events);
     let content = [];
 
       for(let day of days) {
-        let hours = null;
-        
+        let hoursOfDayEvents = null;
         const dayArr = day.split("-");
-        let dayEvents = events
+        const dayEvents = events
         ?.[dayArr[0]]
         ?.[dayArr[1]]
         ?.[dayArr[2]];
 
         if(dayEvents) {
-          hours = dayEvents.map(event => event.split(":")[0]);
+          hoursOfDayEvents = dayEvents.map(event => event.split(":")[0]);
         }
+        
         for(let i = 0; i < 24; i++) {
-          if(hours) {
-            let tableHours = ( i.toString().length === 1 ) ? "0" + i : i.toString();
+          if(hoursOfDayEvents) {
+            const cellHours = ( i.toString().length === 1 ) ? "0" + i : i.toString();
 
-            if(hours.includes(tableHours)) {
+            if(hoursOfDayEvents.includes(cellHours)) {
+              const cellDay = moment(day, "YYYY-MM-DD-ddd").format("YYYY-MM-DD");
+              const cellTime = dayEvents[hoursOfDayEvents.findIndex(i => i === cellHours)] 
+
               content.push(<StyledCellWithEvent 
                 tabIndex = {dayArr[2] + i} 
                 key = {dayArr[2] + i}
-                onFocus = {()=> console.log(moment(day, "YYYY-MM-DD-ddd").format("YYYY-MM-DD") + " " + tableHours)}
-                onBlur = {()=> console.log("blur")}
+                isActive = { choisenEvent === cellDay + " " + cellTime }
+                onFocus = { () => choiseEvent(cellDay + " " + cellTime) }
+                onBlur = { () => choiseEvent("") }
               />);
             } else {
-              content.push(<StyledCell key = {dayArr[2] + i}></StyledCell>);
-            }
-            
+              content.push(<StyledCell key = {dayArr[2] + i}/>);
+            } 
           } else {
-            content.push(<StyledCell key = {dayArr[2] + i}></StyledCell>);
+            content.push(<StyledCell key = {dayArr[2] + i}/>);
           }
+        }
       }
-    }
     return content;
   }
 
   return (
     <TableWrapper>
       <TimeWrapper>
-        { renderTime() }
+        { renderTimeColumn() }
       </TimeWrapper>
       <GridWrapper>
-        { renderCells(days, events) }
+        { renderCells(events, days) }
       </GridWrapper>
     </TableWrapper>
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    days: state.weekDays.days,
-    events: state.events
-  };
+const mapStateToProps = state => ({
+    days: state.days.days,
+    events: state.events.events,
+    choisenEvent: state.events.choisenEvent
+})
+
+const mapDispatchToProps = {
+  choiseEvent
 }
 
-export default connect(mapStateToProps)(Table);
+export default connect(mapStateToProps, mapDispatchToProps)(Table);
+
+//2021-08-25 09:00:00

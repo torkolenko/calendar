@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import DayItem from "./DayItem";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import moment from "moment";
 
 const DayListWrapper = styled.div`
@@ -14,6 +14,7 @@ function Daylist({ days }) {
   function renderDays(days) {
     const daysAndWeekDays = days.map( day => {
       const dayAndWeekDay = moment(day, "YYYY-MM-DD-ddd").format("D-ddd");
+      
       return <DayItem 
         active = {dayAndWeekDay === moment().format("D-ddd")}
         dayOfWeek = { dayAndWeekDay.split("-")[1][0] } 
@@ -21,6 +22,7 @@ function Daylist({ days }) {
         key = { dayAndWeekDay.split("-")[0] }
       />
   });
+    
     return daysAndWeekDays;
   }
 
@@ -31,10 +33,8 @@ function Daylist({ days }) {
   )
 }
 
-export const mapStateToProps = state => {
-  return {
-    days: state.weekDays.days
-  };
-}
+export const mapStateToProps = state => ({
+    days: state.days.days
+})
 
 export default connect(mapStateToProps)(Daylist);

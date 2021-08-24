@@ -38,8 +38,8 @@ const StyledDay = active ? StyledActiveDayOfMonth : StyledDayOfMonth
 
   return (
     <DayItemWrapper>
-      <StyledDayOfWeek>{dayOfWeek.toUpperCase()}</StyledDayOfWeek>
-      <StyledDay>{dayOfMonth}</StyledDay>
+      <StyledDayOfWeek>{ dayOfWeek }</StyledDayOfWeek>
+      <StyledDay>{ dayOfMonth }</StyledDay>
     </DayItemWrapper>
   )
 }

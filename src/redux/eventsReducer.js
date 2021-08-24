@@ -1,38 +1,41 @@
-import { CREATE_EVENT } from './types';
+import { CREATE_EVENT, CHOISE_EVENT, DELETE_EVENT } from './types';
 
-function addEvent(state, data) {
-  const { year } = data;
-  const { month } = data;
-  const { day } = data;
-  const { time } = data;
-  const hours = time.split(':')[0];
+function addEvent(state, event) { //функция, которая симулирует работу api
+  const { year: eventYear } = event;
+  const { month: eventMonth } = event;
+  const { day: eventDay } = event;
+  const { time: eventTime } = event;
+  const eventHours = eventTime.split(':')[0];
 
-  if (state?.[year]) {
-    if (state[year]?.[month]) {
-      if (state[year][month]?.[day]) {
-        const choisenDayHours = state[year][month][day].map((allTime) => allTime.split(':')[0]);
-        if (choisenDayHours.includes(hours)) {
+  if (state.events?.[eventYear]) {
+    if (state.events[eventYear]?.[eventMonth]) {
+      if (state.events[eventYear][eventMonth]?.[eventDay]) {
+        const stateEventsHours = state.events[eventYear][eventMonth][eventDay]
+        .map((time) => time.split(':')[0]);
+        
+        if (stateEventsHours.includes(eventHours)) {
           return { ...state };
         } else {
-          state[year][month][day].push(time);
+          state.events[eventYear][eventMonth][eventDay].push(eventTime);
+          
           return { ...state };
         }
       } else {
-        state[year][month][day] = [time];
+        state.events[eventYear][eventMonth][eventDay] = [eventTime];
       
         return { ...state }
       }
     } else {
-      state[year][month] = {
-        [day]: [time]
+      state.events[eventYear][eventMonth] = {
+        [eventDay]: [eventTime]
       }
       
       return { ...state }
     }
   } else {
-    state[year] = {
-      [month]: {
-        [day]: [time]
+    state.events[eventYear] = {
+      [eventMonth]: {
+        [eventDay]: [eventTime]
       }  
     };
     
@@ -40,21 +43,43 @@ function addEvent(state, data) {
   }
 }
 
+function deleteEvent(state, event) {
+  const { year: eventYear } = event;
+  const { month: eventMonth } = event;
+  const { day: eventDay } = event;
+  const { time: eventTime } = event;
+  const currentDayEvents = state.events[eventYear][eventMonth][eventDay];
+  
+  const currentDayEventsAfterDelete = currentDayEvents
+  .filter((currentTime) => currentTime !== eventTime);
+
+  state.events[eventYear][eventMonth][eventDay] = currentDayEventsAfterDelete;
+  
+  return { ...state };
+}
+
 const initialState = {
-  "2021": {
-    "08": {
-      "24": [ "11:30:01", "22:30:01" ],
-      "27": ["22:22:01", "05:30:00"],
-      "29": ["05:30:01", "03:00:08"], 
-      "23": [ "23:30:01"]
+  events: {
+    "2021": {
+      "08": {
+        "24": [ "11:30:01", "22:30:01" ],
+        "27": ["22:22:01", "05:30:00"],
+        "29": ["05:30:01", "03:00:08"], 
+        "23": [ "23:30:01"]
+      }
     }
-  }
+  },
+  choisenEvent: ""
 }
 
 export const eventsReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_EVENT:
-      return addEvent(state, action.payload)
+      return addEvent(state, action.payload);
+    case CHOISE_EVENT:
+      return { ...state, choisenEvent: action.payload};
+    case DELETE_EVENT:
+      return deleteEvent(state, action.payload);
     default: return state;
   }
-}
+};
