@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-function DayItem({dayOfWeek, dayOfMonth}) {
+function DayItem({dayOfWeek, dayOfMonth, active}) {
 
 const DayItemWrapper = styled.div`
   width: 12.5%;
@@ -10,7 +10,7 @@ const DayItemWrapper = styled.div`
   align-items: center;
 `;
 
-const StyleDayOfWeek = styled.div`
+const StyledDayOfWeek = styled.div`
   font-size: 11px;
   font-weight: 800;  
   height: 25px;
@@ -19,7 +19,7 @@ const StyleDayOfWeek = styled.div`
   align-items: center;
 `;
 
-const StyleDayOfMonth = styled.div`
+const StyledDayOfMonth = styled.div`
   font-size: 19px;
   display: flex;
   justify-content: center;
@@ -27,19 +27,19 @@ const StyleDayOfMonth = styled.div`
   border-radius: 50%;
   width: 33px;
   height: 33px;
-
-  &:selected {
-    background-color: #ff2d2d;
-    color: white;
-  }
 `;
 
+const StyledActiveDayOfMonth = styled(StyledDayOfMonth)`
+  background-color: #ff2d2d;
+  color: white;
+`;
 
+const StyledDay = active ? StyledActiveDayOfMonth : StyledDayOfMonth
 
   return (
     <DayItemWrapper>
-      <StyleDayOfWeek>{dayOfWeek.toUpperCase()}</StyleDayOfWeek>
-      <StyleDayOfMonth>{dayOfMonth}</StyleDayOfMonth>
+      <StyledDayOfWeek>{dayOfWeek.toUpperCase()}</StyledDayOfWeek>
+      <StyledDay>{dayOfMonth}</StyledDay>
     </DayItemWrapper>
   )
 }

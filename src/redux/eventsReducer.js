@@ -23,12 +23,18 @@ function addEvent(state, data) {
         return { ...state }
       }
     } else {
-      state[year][month] = day
+      state[year][month] = {
+        [day]: [time]
+      }
       
       return { ...state }
     }
   } else {
-    state[year] = month;
+    state[year] = {
+      [month]: {
+        [day]: [time]
+      }  
+    };
     
     return { ...state }
   }

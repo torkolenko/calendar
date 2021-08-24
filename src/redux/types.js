@@ -1,2 +1,3 @@
 export const CREATE_EVENT = "EVENT/CREATE_EVENT"
 export const GET_WEEK = "WEEK/GET_WEEK"
+export const CHOISE_EVENT = "EVENT/CHOISE_EVENT"

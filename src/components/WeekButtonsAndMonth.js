@@ -45,22 +45,13 @@ const WeekButtonsWrapper = styled.div`
 
 function WeekButtonsAndMonth({ days, getWeek }) {
   
-  const daysView = days.map( day => {
-    let dayArr = day.split("-");
-
-    return ( moment()
-      .set("year" ,dayArr[0])
-      .set("month" ,dayArr[1])
-      .set("date", dayArr[2])
-      .format("YYYY-MMMM")
-    )
-  });
+  const yearsAndMonths = days.map( day => moment(day, "YYYY-MM-DD-ddd").format("YYYY-MMMM") );
   
   const months = new Set();
-  daysView.forEach(day => months.add(day.split("-")[1]));
+  yearsAndMonths.forEach(day => months.add(day.split("-")[1]));
 
   const years = new Set();
-  daysView.forEach(day => years.add(day.split("-")[0]));
+  yearsAndMonths.forEach(day => years.add(day.split("-")[0]));
 
   const monthsAndYear = Array.from(months.values()).join(",") + " " + Array.from(years.values()).join(",");
   
@@ -76,14 +67,14 @@ function WeekButtonsAndMonth({ days, getWeek }) {
     <StyleChangeWeek>
       <WeekButtonsWrapper>
         <StylePrevWeekButton onClick = { () => {
-          const date = getCurrentWeek().subtract('days', 7);
+          const date = getCurrentWeek().subtract(7, 'days');
           getWeek(date);
           }}/>
       </WeekButtonsWrapper>
       <MonthWrapper>{monthsAndYear}</MonthWrapper>
       <WeekButtonsWrapper>
         <StyleNextWeekButton onClick = { () => {
-          const date = getCurrentWeek().add('days', 7)
+          const date = getCurrentWeek().add(7, 'days');
           getWeek(date);
         }}/>
       </WeekButtonsWrapper>

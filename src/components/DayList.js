@@ -11,24 +11,17 @@ const DayListWrapper = styled.div`
 `;
 
 function Daylist({ days }) {
-
   function renderDays(days) {
-    const daysView = days.map( day => {
-      let dayArr = day.split("-");
-
-      let dayView = moment()
-        .set("year" ,dayArr[0])
-        .set("month" ,dayArr[1])
-        .set("date", dayArr[2])
-        .format("D-ddd");
-
+    const daysAndWeekDays = days.map( day => {
+      const dayAndWeekDay = moment(day, "YYYY-MM-DD-ddd").format("D-ddd");
       return <DayItem 
-        dayOfWeek = { dayView.split("-")[1][0] } 
-        dayOfMonth = { dayView.split("-")[0] }
-        key = { dayView.split("-")[0] }
+        active = {dayAndWeekDay === moment().format("D-ddd")}
+        dayOfWeek = { dayAndWeekDay.split("-")[1][0] } 
+        dayOfMonth = { dayAndWeekDay.split("-")[0] }
+        key = { dayAndWeekDay.split("-")[0] }
       />
   });
-    return daysView;
+    return daysAndWeekDays;
   }
 
   return (

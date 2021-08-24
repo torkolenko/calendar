@@ -1,4 +1,7 @@
 import styled from "styled-components"
+import { getWeek } from "../redux/actions";
+import moment from "moment";
+import { connect } from "react-redux";
 
 const FooterWrapper = styled.div`
   padding: 0;
@@ -31,13 +34,19 @@ const DeleteButton = styled(TodayButton)`
   // display: none;
 `;
 
-function Footer() {
+function Footer({getWeek}) {
   return (
     <FooterWrapper>
-      <TodayButton>Today</TodayButton>
+      <TodayButton onClick = { ()=> {
+        getWeek(moment());
+      }}>Today</TodayButton>
       <DeleteButton>Delete</DeleteButton>
     </FooterWrapper>
   )
 }
 
-export default Footer;
+const mapDispatchToProps = {
+  getWeek
+}
+
+export default connect(null, mapDispatchToProps)(Footer);
