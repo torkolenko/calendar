@@ -40,7 +40,13 @@ function Header({ createEvent }) {
     <HeaderWrapper>
       <StyledTitle>Interview Calendar</StyledTitle>
           <AddButton onClick = {  () => {
-            const event = prompt("Enter event time:\nYYYY-MM-DD HH:mm:ss", "");
+            while(true) {
+            var event = prompt("Enter event time:\nYYYY-MM-DD HH:mm:ss", "");
+            
+            if (/^\d\d\d\d-\d\d-\d\d\s\d\d/.test(event) || event === null) break;
+              alert("Invalid format. Please, try again!");
+            }
+            
             if(event) {
               createEvent(event);
             };

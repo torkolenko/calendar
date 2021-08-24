@@ -47,6 +47,7 @@ function Footer({getWeek, choisenEvent, deleteEvent}) {
       <StyledDeleteButton 
         isActive = { choisenEvent }
         onMouseDown = { () => deleteEvent(choisenEvent) }
+        accesskey = "delete"
       >Delete</StyledDeleteButton>
     </FooterWrapper>
   )

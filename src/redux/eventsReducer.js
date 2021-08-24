@@ -1,105 +1,49 @@
 import { CREATE_EVENT, CHOISE_EVENT, DELETE_EVENT } from './types';
 
-// function addEvent(state, event) { //функция, которая симулирует работу api
-//   const { year: eventYear } = event;
-//   const { month: eventMonth } = event;
-//   const { day: eventDay } = event;
-//   const { time: eventTime } = event;
-//   const eventHours = eventTime.split(':')[0];
-
-//   if (state.events?.[eventYear]) {
-//     if (state.events[eventYear]?.[eventMonth]) {
-//       if (state.events[eventYear][eventMonth]?.[eventDay]) {
-//         const stateEventsHours = state.events[eventYear][eventMonth][eventDay]
-//         .map((time) => time.split(':')[0]);
-        
-//         if (stateEventsHours.includes(eventHours)) {
-//           return { ...state };
-//         } else {
-//           state.events[eventYear][eventMonth][eventDay].push(eventTime);
-//           return { ...state };
-//         }
-//       } else {
-//         state.events[eventYear][eventMonth][eventDay] = [eventTime];
-      
-//         return { ...state }
-//       }
-//     } else {
-//       state.events[eventYear][eventMonth] = {
-//         [eventDay]: [eventTime]
-//       }
-      
-//       return { ...state }
-//     }
-//   } else {
-//     state.events[eventYear] = {
-//       [eventMonth]: {
-//         [eventDay]: [eventTime]
-//       }  
-//     };
-    
-//     return { ...state }
-//   }
-// }
-
-// function deleteEvent(state, event) {
-//   const { year: eventYear } = event;
-//   const { month: eventMonth } = event;
-//   const { day: eventDay } = event;
-//   const { time: eventTime } = event;
-//   const currentDayEvents = state.events[eventYear][eventMonth][eventDay];
-  
-//   const currentDayEventsAfterDelete = currentDayEvents
-//   .filter((currentTime) => currentTime !== eventTime);
-
-//   state.events[eventYear][eventMonth][eventDay] = currentDayEventsAfterDelete;
-  
-//   return { ...state };
-// }
-
-function addEvent(state, event) { //функция, которая симулирует работу api
+function addEvent(state, event) { //функция, которая эмулирует работу api
+  const events = state.events;
   const { year: eventYear } = event;
   const { month: eventMonth } = event;
   const { day: eventDay } = event;
   const { time: eventTime } = event;
   const eventHours = eventTime.split(':')[0];
 
-  if (state?.[eventYear]) {
-    if (state[eventYear]?.[eventMonth]) {
-      if (state[eventYear][eventMonth]?.[eventDay]) {
-        const stateEventsHours = state[eventYear][eventMonth][eventDay]
+  if (events?.[eventYear]) {
+    if (events[eventYear]?.[eventMonth]) {
+      if (events[eventYear][eventMonth]?.[eventDay]) {
+        const stateEventsHours = events[eventYear][eventMonth][eventDay]
         .map((time) => time.split(':')[0]);
-        
         if (stateEventsHours.includes(eventHours)) {
-          return { ...state };
+          return { events: {...events} };
         } else {
-          state[eventYear][eventMonth][eventDay].push(eventTime);
-          return { ...state };
+          events[eventYear][eventMonth][eventDay].push(eventTime);
+
+          return { events: {...events} };
         }
       } else {
-        state[eventYear][eventMonth][eventDay] = [eventTime];
+        events[eventYear][eventMonth][eventDay] = [eventTime];
       
-        return { ...state }
+        return { events: {...events} }
       }
     } else {
-      state[eventYear][eventMonth] = {
+      events[eventYear][eventMonth] = {
         [eventDay]: [eventTime]
       }
       
-      return { ...state }
+      return { events: {...events} }
     }
   } else {
-    state[eventYear] = {
+    events[eventYear] = {
       [eventMonth]: {
         [eventDay]: [eventTime]
       }  
     };
     
-    return { ...state }
+    return { events: {...events} }
   }
 }
 
-function deleteEvent(state, event) {
+function deleteEvent(state, event) { //функция, которая эмулирует работу api
   const { year: eventYear } = event;
   const { month: eventMonth } = event;
   const { day: eventDay } = event;
@@ -113,19 +57,9 @@ function deleteEvent(state, event) {
   
   return { ...state };
 }
-const initialState = {
-  // events: {
-  //   "2021": {
-  //     "08": {
-  //       "24": [ "11:30:01", "22:30:01" ],
-  //       "27": ["22:22:01", "05:30:00"],
-  //       "29": ["05:30:01", "03:00:08"], 
-  //       "23": [ "23:30:01"]
-  //     }
-  //   }
-  // },
-  // choisenEvent: ""
 
+const initialState = {
+  events: {
     "2021": {
       "08": {
         "24": [ "11:30:01", "22:30:01" ],
@@ -134,6 +68,7 @@ const initialState = {
         "23": [ "23:30:01"]
       }
     }
+  }
 }
 
 export const eventsReducer = (state = initialState, action) => {

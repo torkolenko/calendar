@@ -113,9 +113,9 @@ function Table({ days, events, choisenEvent, choiseEvent }) {
 }
 
 const mapStateToProps = state => ({
-    days: state.days.days,
     events: state.events.events,
-    choisenEvent: state.events.choisenEvent
+    choisenEvent: state.events.choisenEvent,
+    days: state.days.days,
 })
 
 const mapDispatchToProps = {
@@ -123,5 +123,3 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
-
-//2021-08-25 09:00:00
